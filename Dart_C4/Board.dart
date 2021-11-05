@@ -32,9 +32,17 @@ class Board {
     return false;
   }
 
+  check_draw() {
+    for (int i = 0; i < this.col; i++) {
+      if (!check_col_full(i)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   random() {
     var num = Random().nextInt(this.col);
-    print(num);
     if (!check_col_full(num)) {
       return num;
     }
@@ -74,7 +82,6 @@ class Board {
 
   smart(var player, var myrow, var mycol, var p_cords) {
     if (myrow == -1) {
-      print("Stuck in herer haallpp");
       return random();
     }
 
@@ -82,20 +89,19 @@ class Board {
     var coords = check_win(player, myrow, mycol, 3);
 
     if (coords[0] != -1) {
-      print("GOING FOR WIN....");
+      print("GOING FOR WIN...."); // For the purpose of debugging / Demo'ing
       return coords[1];
     }
 
     //Checking on how to block
-    print("Player Cords: ${p_cords} ");
     var block = check_win("X", p_cords[0], p_cords[1], 3);
 
     if (block[0] != -1) {
-      print("GOING FOR BLOCKK....");
+      print("GOING FOR BLOCKK...."); // For the purpose of debugging / Demo'ing
       return block[1];
     }
 
-    print("GENERATING RANDOM");
+    print("GENERATING RANDOM"); // For the purpose of debugging / Demo'ing
     return random();
   }
 
