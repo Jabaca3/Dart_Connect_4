@@ -1,0 +1,8 @@
+name: test
+environment:
+  sdk: ">=2.11.0 <3.0.0"
+dependencies:
+  uuid: ^3.0.5 
+  convert: ^3.0.1
+  http: ^0.13.4
+  io: ^1.0.3
