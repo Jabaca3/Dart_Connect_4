@@ -22,52 +22,65 @@ void main() async {
   ui.showMessage("\n");
   myBoard.strategie = selection;
 
-  while (true) {
-    var player = "X";
-    var computer = "O";
-    var player_coord = [];
-    var computer_coord = [];
+  print(selection);
 
+  bool game = true;
+
+  var player = "X";
+  var computer = "O";
+  var player_coord = [-1, -1];
+  var computer_coord = [-1, -1];
+
+  while (game) {
     while (true) {
+      // Prompting user move
       var move = ui.promptMove();
       --move;
       if (!myBoard.check_col_full(move)) {
-        player_coord = myBoard.drop_token(move, player);
+        player_coord = myBoard.drop_token(move, player).cast<int>();
         break;
       }
     }
-
-    if (strategies == 2) {
-      computer_coord = myBoard.drop_token(myBoard.random(), computer);
-      ui.showMessage("\n");
+    // Checking if user Won
+    if (myBoard.check_win(player, player_coord[0], player_coord[1], 4) ==
+        "Win") {
       ui.showBoard(myBoard.board);
-      ui.showMessage("\n");
-    } else {
+      game = false;
+      exit(0);
+    }
+
+    // Calculting random variation
+    if (selection == 1) {
+      var rand = myBoard.random();
+      computer_coord = myBoard.drop_token(rand, computer).cast<int>();
+
+      // Checking if computer won
+      if (myBoard.check_win(
+              computer, computer_coord[0], computer_coord[1], 4) ==
+          "Win") {
+        ui.showBoard(myBoard.board);
+        exit(0);
+      }
+    } else if (selection == 0) {
       // MAKE SMART STRAT HERE
-      computer_coord = myBoard.drop_token(myBoard.smart(), computer);
-      ui.showMessage("\n");
-      ui.showBoard(myBoard.board);
-      ui.showMessage("\n");
+      var location = myBoard.smart(
+          computer, computer_coord[0], computer_coord[1], player_coord);
+
+      computer_coord = myBoard.drop_token(location, computer).cast<int>();
+      print(computer_coord);
+
+      // Checking if computer won
+      if (myBoard.check_win(
+              computer, computer_coord[0], computer_coord[1], 4) ==
+          "Win") {
+        ui.showBoard(myBoard.board);
+        exit(0);
+      }
     }
 
-    if (myBoard.check_vertical(player, player_coord[1], 4) == "Win") {
-      //ui.showBoard(myBoard.board);
-      break;
-    }
-    if (myBoard.check_vertical(computer, computer_coord[1], 4) == "Win") {
-      //ui.showBoard(myBoard.board);
-      break;
-    }
-
-    // Check for computer win
+    // Showing Board after moves...
+    ui.showMessage("\n");
+    ui.showBoard(myBoard.board);
+    ui.showMessage("\n");
   }
-
-  //ui.showMessage("\n");
-
-  // Respond to API
-  // Get Json response and get move from request
-  // Have
-
-  // TODO:
-  // Select Strategie
 }
