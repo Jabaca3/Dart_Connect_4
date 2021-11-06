@@ -21,7 +21,7 @@ class ConsoleUI {
     } else {
       var selection = int.tryParse(line);
       if (selection == null) {
-        //pass
+        ///pass
       } else if (selection > 0 && selection < 3) {
         return --selection;
       }
@@ -36,7 +36,7 @@ class ConsoleUI {
         showMessage("Select a slot [1-7] ");
         var line = stdin.readLineSync();
         if (line == null) {
-          //Pass
+          ///Pass
         } else {
           var value = int.parse(line);
           if (value > 0 && value < 8) {

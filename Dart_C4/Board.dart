@@ -10,7 +10,7 @@ class Board {
   var board = List.generate(6, (i) => List.filled(7, "."), growable: false);
 
   drop_token(var mycol, player) {
-    // Check if col is full, if not place
+    /// Check if col is full, if not place
     if (!check_col_full(mycol)) {
       for (int i = this.row - 1; i >= 0; i--) {
         if (board[i][mycol] == ".") {
@@ -26,7 +26,7 @@ class Board {
     if (mycol >= this.col) {
       return true;
     }
-    if (board[0][mycol] == "X" || board[0][mycol] == "O") {
+    if (board[0][mycol] == "x" || board[0][mycol] == "o") {
       return true;
     }
     return false;
@@ -85,33 +85,37 @@ class Board {
       return random();
     }
 
-    //Checking on how to win
+    /// Checking on how to win
     var coords = check_win(player, myrow, mycol, 3);
 
     if (coords[0] != -1) {
-      print("GOING FOR WIN...."); // For the purpose of debugging / Demo'ing
+      print("GOING FOR WIN....");
+
+      /// For the purpose of debugging / Demo'ing
       return coords[1];
     }
 
-    //Checking on how to block
-    var block = check_win("X", p_cords[0], p_cords[1], 3);
+    /// Checking on how to block
+    var block = check_win("x", p_cords[0], p_cords[1], 3);
 
     if (block[0] != -1) {
-      print("GOING FOR BLOCKK...."); // For the purpose of debugging / Demo'ing
+      /// For the purpose of debugging / Demo'ing
+      print("GOING FOR BLOCKK....");
       return block[1];
     }
 
-    print("GENERATING RANDOM"); // For the purpose of debugging / Demo'ing
+    /// For the purpose of debugging / Demo'ing
+    print("GENERATING RANDOM");
     return random();
   }
 
   check_horizontal(var player, var myrow, var connection) {
-    // Sart on myrow 0 and given column 0 and check horizonatally
+    /// Sart on myrow 0 and given column 0 and check horizonatally
     var counter = 0;
 
-    // Start checking from the left
+    /// Start checking from the left
     for (int col = 0; col < this.col; col++) {
-      // Made for Smart to find next position
+      /// Made for Smart to find next position
       if (connection == 3 && connection == counter && col < this.col - 1) {
         return [myrow, col++];
       }
@@ -122,23 +126,25 @@ class Board {
         return [myrow, col++];
       }
 
-      // Itterating through the board
+      /// Itterating through the board
       if (this.board[myrow][col] == player) {
         counter += 1;
       }
       if (connection == 4 && connection == counter) {
+        for (counter; counter > 0; counter--) {
+          board[myrow][col] = player.toUpperCase();
+          col--;
+        }
         return "Win";
-
-        // Finding anything other than the player resets the connections
       } else if (this.board[myrow][col] != player) {
         counter = 0;
       }
     }
     counter = 0;
 
-    // Start checking from the right
+    /// Start checking from the right
     for (int mycol = this.col - 2; mycol > -1; mycol--) {
-      // Itterating through the board
+      /// Itterating through the board
       if (this.board[myrow][mycol] == player) {
         counter += 1;
       }
@@ -147,9 +153,11 @@ class Board {
       }
 
       if (connection == 4 && connection == counter) {
+        for (counter; counter > 0; counter--) {
+          board[myrow][col] = player.toUpperCase();
+          col++;
+        }
         return "Win";
-
-        // Finding anything other than the player resets the connections
       } else if (this.board[myrow][mycol] != player) {
         counter = 0;
       }
@@ -160,7 +168,7 @@ class Board {
   check_vertical(var player, var mycol, var connection) {
     var counter = 0;
     for (int row = 0; row < this.row; row++) {
-      // Itterating through the board
+      /// Itterating through the board
       if (this.board[row][mycol] == player) {
         counter++;
 
@@ -169,10 +177,14 @@ class Board {
         }
 
         if (connection == 4 && connection == counter) {
+          for (counter; counter > 0; counter--) {
+            this.board[row][mycol] = player.toUpperCase();
+            row--;
+          }
           return "Win";
         }
 
-        // Finding anything other than the player resets the connections
+        /// Finding anything other than the player resets the connections
       } else if (this.board[row][mycol] != player) {
         counter = 0;
       }
@@ -185,9 +197,15 @@ class Board {
 
     var r = myrow;
     var c = mycol;
-    // top-left to bottom-right
+
+    /// top-left to bottom-right
     while (r < this.row && c < this.col) {
       if (connection == 4 && connection == counter) {
+        for (counter; counter > 0; counter--) {
+          board[r][c] = player.toUpperCase();
+          c--;
+          r--;
+        }
         return "Win";
       }
       if (connection == 3 &&
@@ -209,7 +227,8 @@ class Board {
     r = myrow;
     c = mycol;
     counter = 0;
-    // Bottom right to top left
+
+    /// Bottom right to top left
     while (r > -1 && c > -1) {
       if (board[r][c] == player) {
         counter++;
@@ -218,6 +237,11 @@ class Board {
         return [r--, c--];
       }
       if (connection == 4 && connection == counter) {
+        for (counter; counter > 0; counter--) {
+          board[r][c] = player.toUpperCase();
+          c++;
+          r++;
+        }
         return "Win";
       }
       if (board[r][c] != player) {
@@ -230,7 +254,8 @@ class Board {
     r = myrow;
     c = mycol;
     counter = 0;
-    // Top right to bottom left
+
+    /// Top right to bottom left
     while (r < this.row && c > -1) {
       if (board[r][c] == player) {
         counter++;
@@ -244,6 +269,11 @@ class Board {
       }
 
       if (connection == 4 && connection == counter) {
+        for (counter; counter > 0; counter--) {
+          board[r][c] = player.toUpperCase();
+          c++;
+          r--;
+        }
         return "Win";
       }
       if (board[r][c] != player) {
@@ -256,7 +286,8 @@ class Board {
     r = myrow;
     c = mycol;
     counter = 0;
-    // Bottom left to top right
+
+    /// Bottom left to top right
     while (r > -1 && c < this.col) {
       if (board[r][c] == player) {
         counter++;
@@ -269,6 +300,11 @@ class Board {
         return [r--, c++];
       }
       if (connection == 4 && connection == counter) {
+        for (counter; counter > 0; counter--) {
+          board[r][c] = player.toUpperCase();
+          c--;
+          r++;
+        }
         return "Win";
       }
       if (board[r][c] != player) {
